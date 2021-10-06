@@ -33,7 +33,7 @@ function Confirm-PecarnSite {
     $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --confirmregister --siteid $siteid --pin $pin --publickey $publickey --spring.profiles.active=error"
     Write-Debug "Command: $Command"
 
-    if ($PSCmdlet.ShouldProcess("$siteid/$email",'register'))
+    if ($PSCmdlet.ShouldProcess("$siteid",'confirm'))
     {
         Invoke-Expression -Command $Command
     }
