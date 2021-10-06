@@ -85,7 +85,7 @@ Describe "Register-PecarnSite" {
                     Write-Debug "siteid: $siteid"
                     Write-Debug "email: $email"
 
-                    $Command -like ("*--siteid {0} --email {1}*" -f $Expected.siteid, $Expected.email)
+                    $Command -like ("*--register --siteid {0} --email {1}*" -f $Expected.siteid, $Expected.email)
                 }
             }
 
