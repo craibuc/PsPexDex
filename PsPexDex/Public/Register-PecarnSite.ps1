@@ -27,10 +27,10 @@ function Register-PecarnSite {
 
     Push-Location -Path $PexDexDirectory
 
-    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --siteid $siteid --email $email --spring.profiles.active=error"
+    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --register --siteid $siteid --email $email --spring.profiles.active=error"
     Write-Debug "Command: $Command"
 
-    if ($PSCmdlet.ShouldProcess('target','action'))
+    if ($PSCmdlet.ShouldProcess("$siteid/$email",'register'))
     {
         Invoke-Expression -Command $Command
     }
