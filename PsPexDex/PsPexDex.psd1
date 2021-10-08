@@ -12,7 +12,7 @@
 RootModule = '.\PsPexDex.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.1'
+ModuleVersion = '0.2.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -72,6 +72,9 @@ Description = 'PowerShell wrapper of the U of UT''s Data Coordinating Center''s 
 FunctionsToExport = @(
     'Register-PecarnSite'
     'Confirm-PecarnSite'
+    'Test-PecarnXmlFile'
+    'Invoke-Deid'
+    'Submit-PecarnXmlFile'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
