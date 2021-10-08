@@ -58,6 +58,23 @@ Describe "Confirm-PecarnSite" {
                 $Command | Should -HaveParameter $ParameterName -Mandatory
             }
         }
+
+        Context "study" {
+            BeforeAll {
+                $ParameterName = 'study'
+            }
+
+            It "is a [string]" {
+                $Command | Should -HaveParameter $ParameterName -Type [string]
+            }
+            It "is mandatory" {
+                $Command | Should -HaveParameter $ParameterName -Mandatory
+            }
+            It "has a list valid values" -skip {
+
+            }
+        }
+    
     }
 
     Context "Usage" {
@@ -68,6 +85,7 @@ Describe "Confirm-PecarnSite" {
                 siteid='ABCD'
                 pin=123456
                 publickey='ssh-rsa 8edff50a-d0e7-49b5-aa43-3c5255a7cf50'
+                study='registry'
                 PexDexDirectory='C:\Program Files\PEXDEX'    
             }
         }
@@ -81,7 +99,7 @@ Describe "Confirm-PecarnSite" {
                 Mock Pop-Location
 
                 # act
-                Confirm-PecarnSite -siteid $Expected.siteid -pin $Expected.pin -publickey $Expected.publickey
+                Confirm-PecarnSite -siteid $Expected.siteid -pin $Expected.pin -publickey $Expected.publickey -study $Expected.study
             }
 
             It "changes to the directory that contains the PexDex EXE" {
@@ -97,7 +115,7 @@ Describe "Confirm-PecarnSite" {
                 Assert-MockCalled Invoke-Expression -ParameterFilter {
                     Write-Debug "Command: $Command"
 
-                    $Command -like ("*--confirmregister --siteid {0} --pin {1} --publickey {2}*" -f $Expected.siteid, $Expected.pin, $Expected.publickey)
+                    $Command -like ("*--confirmregister --siteid {0} --pin {1} --publickey '{2}' -l {3}*" -f $Expected.siteid, $Expected.pin, $Expected.publickey, $Expected.study)
                 }
             }
 
