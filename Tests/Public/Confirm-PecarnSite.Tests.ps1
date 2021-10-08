@@ -115,7 +115,7 @@ Describe "Confirm-PecarnSite" {
                 Assert-MockCalled Invoke-Expression -ParameterFilter {
                     Write-Debug "Command: $Command"
 
-                    $Command -like ("*--confirmregister --siteid {0} --pin {1} --publickey '{2}' -l {3}*" -f $Expected.siteid, $Expected.pin, $Expected.publickey, $Expected.study)
+                    $Command -like ("*--confirmregister --siteid {0} --pin {1} --publickey '{2}' --study {3}*" -f $Expected.siteid, $Expected.pin, $Expected.publickey, $Expected.study)
                 }
             }
 
