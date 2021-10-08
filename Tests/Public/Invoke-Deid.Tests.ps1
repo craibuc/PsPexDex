@@ -74,6 +74,20 @@ Describe "Invoke-Deid" {
             }
         }
     
+        Context "study" {
+            BeforeAll {
+                $ParameterName = 'study'
+            }
+
+            It "is a [string]" {
+                $Command | Should -HaveParameter $ParameterName -Type [string]
+            }
+            It "is mandatory" {
+                $Command | Should -HaveParameter $ParameterName -Mandatory
+            }
+            It "has a list valid values" -skip {
+            }
+        }
     }
 
     Context "Usage" {
@@ -93,6 +107,7 @@ Describe "Invoke-Deid" {
                 submissionType=0
                 xmlPath=$xmlPath
                 pidPath=$pidPath
+                study='registry'
                 PexDexDirectory='C:\Program Files\PEXDEX'    
             }
         }
@@ -108,7 +123,7 @@ Describe "Invoke-Deid" {
                     Mock Pop-Location
 
                     # act
-                    Invoke-Deid -siteid $Expected.siteid -submissionType $Expected.submissionType -xmlPath $Expected.xmlPath -pidPath $Expected.pidPath
+                    Invoke-Deid -siteid $Expected.siteid -submissionType $Expected.submissionType -xmlPath $Expected.xmlPath -pidPath $Expected.pidPath -study $Expected.study
                 }
 
                 It "changes to the directory that contains the PexDex EXE" {
@@ -123,7 +138,7 @@ Describe "Invoke-Deid" {
                     Assert-MockCalled Invoke-Expression -ParameterFilter {
                         Write-Debug "Command: $Command"
 
-                        $Command -like ("*--deidentify --siteid {0} --submissionType {1} --file {2} --pidtext {3}*" -f $Expected.siteid, $Expected.submissionType, $Expected.xmlPath, $Expected.pidPath)
+                        $Command -like ("*--deidentify --siteid {0} --submissionType {1} --file {2} --pidtext {3} --study {4}" -f $Expected.siteid, $Expected.submissionType, $Expected.xmlPath, $Expected.pidPath, $Expected.study)
                     }
                 }
 
@@ -144,7 +159,7 @@ Describe "Invoke-Deid" {
                     $xmlPath='\invalid\file\path'
 
                     # act/assert
-                    { Invoke-Deid -siteid $Expected.siteid -submissionType $Expected.submissionType -xmlPath $xmlPath -pidPath $Expected.pidPath -ErrorAction Stop } | Should -Throw 'XML file not found'
+                    { Invoke-Deid -siteid $Expected.siteid -submissionType $Expected.submissionType -xmlPath $xmlPath -pidPath $Expected.pidPath -study $Expected.study -ErrorAction Stop } | Should -Throw 'XML file not found'
                 }
             }
 
@@ -154,7 +169,7 @@ Describe "Invoke-Deid" {
                     $pidPath='\invalid\file\path'
 
                     # act/assert
-                    { Invoke-Deid -siteid $Expected.siteid -submissionType $Expected.submissionType -xmlPath $Expected.xmlPath -pidPath $pidPath -ErrorAction Stop } | Should -Throw 'PID file not found'
+                    { Invoke-Deid -siteid $Expected.siteid -submissionType $Expected.submissionType -xmlPath $Expected.xmlPath -pidPath $pidPath -study $Expected.study -ErrorAction Stop } | Should -Throw 'PID file not found'
                 }
             }
 

@@ -14,8 +14,11 @@ Path to the XML file.
 .PARAMETER pidPath
 Path to the PID file.
 
+.PARAMETER study
+Valid values: pedscreen, registry
+
 .EXAMPLE
-PS> Invoke-Deid -siteId 'ABCD' -submissionType 0 -xmlPath \path\to\output\ABCD\ABCD_2020-03-04_to_2020-03-14.xml -pidPath \path\to\output\ABCD\PID_ABCD_2020-03-04_to_2020-03-14.txt
+PS> Invoke-Deid -siteId 'ABCD' -submissionType 0 -xmlPath \path\to\output\ABCD\ABCD_2020-03-04_to_2020-03-14.xml -pidPath \path\to\output\ABCD\PID_ABCD_2020-03-04_to_2020-03-14.txt --study registry
 
 #>
 function Invoke-Deid {
@@ -33,7 +36,11 @@ function Invoke-Deid {
         [string]$xmlPath,
 
         [Parameter(Mandatory)]
-        [string]$pidPath
+        [string]$pidPath,
+
+        [Parameter(Mandatory)]
+        [ValidateSet('pedscreen','registry')]
+        [string]$study
     )
     
     Write-Debug "xmlPath: $xmlPath"
@@ -53,7 +60,7 @@ function Invoke-Deid {
 
     Push-Location -Path $PexDexDirectory
 
-    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --spring.profiles.active=error --deidentify --siteid $siteid --submissionType $submissionType --file $xmlPath --pidtext $pidPath"
+    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --spring.profiles.active=error --deidentify --siteid $siteid --submissiontype $submissionType --file $xmlPath --pidtext $pidPath --study $study"
     Write-Debug "Command: $Command"
 
     if ($PSCmdlet.ShouldProcess("$siteid/$xmlPath",'de-identify'))
