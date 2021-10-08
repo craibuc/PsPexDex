@@ -12,7 +12,7 @@ The six-digit, numerical value supplied by the DCC.
 Located in $env:APPDATA\pexdex\registry.[siteid]\.ssh\id-rsa.pub
 
 .PARAMETER study
-Valid values: registry
+Valid values: pedscreen, registry
 
 .EXAMPLE
 PS> $siteid = 'ABCD'
@@ -41,7 +41,7 @@ function Confirm-PecarnSite {
         [string]$publickey,
 
         [Parameter(Mandatory)]
-        [ValidateSet('registry')]
+        [ValidateSet('pedscreen','registry')]
         [string]$study
     )
     
@@ -50,7 +50,7 @@ function Confirm-PecarnSite {
 
     Push-Location -Path $PexDexDirectory
 
-    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --spring.profiles.active=error --confirmregister --siteid $siteid --pin $pin --publickey '$publickey' -l $study"
+    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --spring.profiles.active=error --confirmregister --siteid $siteid --pin $pin --publickey '$publickey' --study $study"
     Write-Debug "Command: $Command"
 
     if ($PSCmdlet.ShouldProcess("$siteid",'confirm'))
