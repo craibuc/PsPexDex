@@ -97,7 +97,7 @@ Describe "Invoke-Deid" {
             }
         }
 
-        Context "Valid" -skip {
+        Context "Valid" {
 
             Context "When the mandatory parameters are supplied" {
         
