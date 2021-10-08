@@ -9,7 +9,7 @@ The four-letter, site or location id of the entity submitting data.
 Path to the XML file.
 
 .EXAMPLE
-PS> Test-PecarnXmlFile -siteId 'ABCD' -xmlPath ~\pedscreen\output\ABCD\ABCD_2020-03-04_to_2020-03-14.xml
+PS> Test-PecarnXmlFile -siteId 'ABCD' -xmlPath \path\to\output\ABCD\ABCD_2020-03-04_to_2020-03-14.xml
 
 #>
 function Test-PecarnXmlFile {
