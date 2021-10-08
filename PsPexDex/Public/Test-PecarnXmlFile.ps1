@@ -8,8 +8,11 @@ The four-letter, site or location id of the entity submitting data.
 .PARAMETER xmlPath
 Path to the XML file.
 
+.PARAMETER study
+Valid values: pedscreen, registry
+
 .EXAMPLE
-PS> Test-PecarnXmlFile -siteId 'ABCD' -xmlPath \path\to\output\ABCD\ABCD_2020-03-04_to_2020-03-14.xml
+PS> Test-PecarnXmlFile -siteId 'ABCD' -xmlPath \path\to\output\ABCD\ABCD_2020-03-04_to_2020-03-14.xml -study registry
 
 #>
 function Test-PecarnXmlFile {
@@ -20,7 +23,11 @@ function Test-PecarnXmlFile {
         [string]$siteId,
 
         [Parameter(Mandatory)]
-        [string]$xmlPath
+        [string]$xmlPath,
+
+        [Parameter(Mandatory)]
+        [ValidateSet('pedscreen','registry')]
+        [string]$study
     )
     
     if ( (Test-Path -Path $xmlPath) -eq $false )
@@ -33,7 +40,7 @@ function Test-PecarnXmlFile {
 
     Push-Location -Path $PexDexDirectory
 
-    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --spring.profiles.active=error --validate --siteid $siteId --file $xmlPath"
+    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --spring.profiles.active=error --validate --siteid $siteId --file $xmlPath --study $study"
     Write-Debug "Command: $Command"
 
     if ($PSCmdlet.ShouldProcess("$siteId/$xmlPath",'validate'))
