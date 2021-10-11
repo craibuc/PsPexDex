@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
- 
+Tests the validity of a PECARN, XML file.
 
 .PARAMETER siteId
 The four-letter, site or location id of the entity submitting data.
@@ -9,7 +9,7 @@ The four-letter, site or location id of the entity submitting data.
 Path to the XML file.
 
 .PARAMETER study
-Valid values: pedscreen, registry
+Valid values: pedscreen, registry.
 
 .EXAMPLE
 PS> Test-PecarnXmlFile -siteId 'ABCD' -xmlPath \path\to\output\ABCD\ABCD_2020-03-04_to_2020-03-14.xml -study registry
