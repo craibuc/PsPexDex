@@ -46,6 +46,20 @@ Describe "Submit-PecarnXmlFile" {
             }
         }
 
+        Context "study" {
+            BeforeAll {
+                $ParameterName = 'study'
+            }
+
+            It "is a [string]" {
+                $Command | Should -HaveParameter $ParameterName -Type [string]
+            }
+            It "is mandatory" {
+                $Command | Should -HaveParameter $ParameterName -Mandatory
+            }
+            It "has a list valid values" -skip {
+            }
+        }
     }
 
     Context "Usage" {
@@ -59,6 +73,7 @@ Describe "Submit-PecarnXmlFile" {
             $Expected = @{
                 siteId='ABCD'
                 xmlPath=$xmlPath
+                study='registry'
                 PexDexDirectory='C:\Program Files\PEXDEX'    
             }
         }
@@ -74,7 +89,7 @@ Describe "Submit-PecarnXmlFile" {
                     Mock Pop-Location
     
                     # act
-                    Submit-PecarnXmlFile -siteid $Expected.siteid -xmlPath $Expected.xmlPath
+                    Submit-PecarnXmlFile -siteid $Expected.siteid -xmlPath $Expected.xmlPath -study $Expected.study
                 }
     
                 It "changes to the directory that contains the PexDex EXE" {
@@ -88,7 +103,7 @@ Describe "Submit-PecarnXmlFile" {
                     # assert
                     Assert-MockCalled Invoke-Expression -ParameterFilter {
                         Write-Debug "Command: $Command"
-                        $Command -like ("*--validate --siteid {0} --file {1}" -f $Expected.siteid, $Expected.xmlPath)
+                        $Command -like ("*--submit --siteid {0} --file {1} --study {2}" -f $Expected.siteid, $Expected.xmlPath, $Expected.study)
                     }
                 }
     
@@ -109,7 +124,7 @@ Describe "Submit-PecarnXmlFile" {
                     $xmlPath='\invalid\file\path'
 
                     # act/assert
-                    { Submit-PecarnXmlFile -siteid $Expected.siteid -xmlPath $xmlPath -ErrorAction Stop } | Should -Throw 'XML file not found'
+                    { Submit-PecarnXmlFile -siteid $Expected.siteid -xmlPath $xmlPath -study $Expected.study -ErrorAction Stop } | Should -Throw 'XML file not found'
                 }
             }
 
