@@ -38,13 +38,11 @@ Describe "Invoke-Deid" {
                 $ParameterName = 'submissionType'
             }
 
-            It "is a [int]" {
-                $Command | Should -HaveParameter $ParameterName -Type [int]
+            It "is a [string]" {
+                $Command | Should -HaveParameter $ParameterName -Type [string]
             }
             It "is mandatory" {
                 $Command | Should -HaveParameter $ParameterName -Mandatory
-            }
-            It "has a list valid values" -skip {
             }
         }
 
@@ -104,7 +102,7 @@ Describe "Invoke-Deid" {
             # arrange
             $Expected = @{
                 siteid='ABCD'
-                submissionType=0
+                submissionType='Deid'
                 xmlPath=$xmlPath
                 pidPath=$pidPath
                 study='registry'
@@ -138,7 +136,9 @@ Describe "Invoke-Deid" {
                     Assert-MockCalled Invoke-Expression -ParameterFilter {
                         Write-Debug "Command: $Command"
 
-                        $Command -like ("*--deidentify --siteid {0} --submissionType {1} --file {2} --pidtext {3} --study {4}" -f $Expected.siteid, $Expected.submissionType, $Expected.xmlPath, $Expected.pidPath, $Expected.study)
+                        $submissionType = $Expected.submissionType -eq 'Deid' ? 1 : 0
+
+                        $Command -like ("*--deidentify --siteid {0} --submissionType {1} --file {2} --pidtxt {3} --study {4}" -f $Expected.siteid, $submissionType, $Expected.xmlPath, $Expected.pidPath, $Expected.study)
                     }
                 }
 
