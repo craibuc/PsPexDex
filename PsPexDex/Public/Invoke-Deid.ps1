@@ -60,7 +60,7 @@ function Invoke-Deid {
 
     Push-Location -Path $PexDexDirectory
 
-    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --spring.profiles.active=error --deidentify --siteid $siteid --submissiontype $submissionType --file $xmlPath --pidtext $pidPath --study $study"
+    $Command = "java ""-Dproperties.dir=C:\Program Files\PEXDEX"" -jar .\CLI\pexdexCLI.jar --spring.profiles.active=error --deidentify --siteid $siteid --submissiontype $submissionType --file $xmlPath --pidtxt $pidPath --study $study"
     Write-Debug "Command: $Command"
 
     if ($PSCmdlet.ShouldProcess("$siteid/$xmlPath",'de-identify'))
